@@ -1,0 +1,69 @@
+{
+  "personal_details": {
+    "full_name": "Aman Sharma",
+    "gender": "Male",
+    "date_of_birth": "2001-08-30",
+    "age": "24",
+    "place_of_birth": "Ramgarh, Alwar",
+    "height": "5'11\"",
+    "complexion": "Gehua",
+    "blood_group": "A+",
+    "marital_status": "Single",
+    "religion": "Hindu",
+    "sub_caste": "Brahmin",
+    "nationality": "Indian",
+    "mother_tongue": "Hindi, Rajasthani"
+  },
+  "education_details": {
+    "highest_qualification": "B.Tech",
+    "institution": "JECRC Foundation, Jaipur",
+    "year_of_passing": "2022"
+  },
+  "professional_details": {
+    "occupation": "Software Engineer",
+    "organization_name": "Times Internet",
+    "designation": "Manager M1",
+    "annual_income": "19 LPA",
+    "work_location": "Noida",
+    "employment_type": "Full Time"
+  },
+  "family_details": {
+    "father": {
+      "name": "Shri Suresh Chand Sharma",
+      "occupation": "Veterinary Doctor"
+    },
+    "mother": {
+      "name": "Shrimati Sudha Sharma",
+      "occupation": "Teacher"
+    },
+    "siblings": {
+      "brothers": {
+        "count": "1",
+        "marital_status": "Single"
+      },
+      "sisters": {
+        "count": "0"
+      }
+    },
+    "family_type": "Joint Family",
+    "native_place": "Badanghari, Kherli, Alwar"
+  },
+  "religious_and_cultural_details": {
+    "gotra": "Siroliya",
+    "father_gotra": "Siroliya",
+    "mother_gotra": "Tagare",
+    "zodiac_sign": "Mesha (Aries)",
+    "manglik_status": "No"
+  },
+  "contact_details": {
+    "contact_person_name": "Shri Suresh Chand Sharma",
+    "relationship_to_candidate": "Father",
+    "phone_number": "9828722585",
+    "residential_address": "Ramgarh, Alwar, Rajasthan"
+  },
+  "photograph": {
+    "photo_available": true,
+    "photo_url": "aman.jpg"
+  }
+}
+

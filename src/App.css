@@ -1,0 +1,25 @@
+.app {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-container {
+    padding: 0 12px;
+  }
+}
+
