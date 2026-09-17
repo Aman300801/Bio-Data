@@ -62,7 +62,13 @@
   },
   "photograph": {
     "photo_available": true,
-    "photo_url": "aman.jpg"
+    "photos": [
+      { "file": "aman.jpg", "alt": "Aman Sharma" },
+      { "file": "aman-2.jpg", "alt": "Aman Sharma at a mountain viewpoint" },
+      { "file": "aman-3.jpg", "alt": "Aman Sharma at a temple" },
+      { "file": "aman-4.jpg", "alt": "Aman Sharma in the mountains" },
+      { "file": "aman-5.jpg", "alt": "Aman Sharma in traditional attire" }
+    ]
   }
 }
 

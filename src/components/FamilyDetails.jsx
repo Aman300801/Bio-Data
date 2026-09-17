@@ -1,10 +1,19 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import Section from './Section'
+import InfoGrid from './InfoGrid'
+import useIsMobile from '../hooks/useIsMobile'
 import './Section.css'
+
+const siblingLabel = (count, maritalStatus) => {
+  if (count === undefined || count === null || count === '') return ''
+  if (String(count) === '0') return 'None'
+  return maritalStatus ? `${count} (${maritalStatus})` : String(count)
+}
 
 const FamilyDetails = ({ data }) => {
   const icon = (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
       <circle cx="9" cy="7" r="4"></circle>
       <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -12,111 +21,69 @@ const FamilyDetails = ({ data }) => {
     </svg>
   )
 
-  const icons = ['👨', '👩', '👦', '👧', '🏠', '💼', '📍']
-  let iconIndex = 0
+  const isMobile = useIsMobile()
+  const people = [
+    data.father?.name && {
+      role: 'Father',
+      name: data.father.name,
+      occupation: data.father.occupation,
+    },
+    data.mother?.name && {
+      role: 'Mother',
+      name: data.mother.name,
+      occupation: data.mother.occupation,
+    },
+  ].filter(Boolean)
 
   return (
-    <Section title="Family Details" icon={icon} gradient="gradient-1">
-      <div className="details-flow">
-        {data.father?.name && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Father's Name</div>
-              <div className="detail-value">{data.father.name}</div>
-              {data.father.occupation && (
-                <div className="detail-subvalue">{data.father.occupation}</div>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {data.mother?.name && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Mother's Name</div>
-              <div className="detail-value">{data.mother.name}</div>
-              {data.mother.occupation && (
-                <div className="detail-subvalue">{data.mother.occupation}</div>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {data.siblings?.brothers?.count && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Brothers</div>
-              <div className="detail-value">{data.siblings.brothers.count}</div>
-              {data.siblings.brothers.marital_status && (
-                <div className="detail-subvalue">{data.siblings.brothers.marital_status}</div>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {data.siblings?.sisters?.count && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Sisters</div>
-              <div className="detail-value">{data.siblings.sisters.count}</div>
-              {data.siblings.sisters.marital_status && (
-                <div className="detail-subvalue">{data.siblings.sisters.marital_status}</div>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {data.family_type && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Family Type</div>
-              <div className="detail-value">{data.family_type}</div>
-            </div>
-          </div>
-        )}
-        
-        {data.family_status && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Family Status</div>
-              <div className="detail-value">{data.family_status}</div>
-            </div>
-          </div>
-        )}
-        
-        {data.native_place && (
-          <div className="detail-item" style={{ animationDelay: `${iconIndex * 0.1}s` }}>
-            <div className="detail-icon-wrapper">
-              <span>{icons[iconIndex++] || '✨'}</span>
-            </div>
-            <div className="detail-content">
-              <div className="detail-label">Native Place</div>
-              <div className="detail-value">{data.native_place}</div>
-            </div>
-          </div>
-        )}
+    <Section
+      id="family"
+      title="Family"
+      subtitle="Parents, siblings, and native place"
+      icon={icon}
+      accent="gold"
+    >
+      <div className="person-grid">
+        {people.map((person, index) => (
+          <motion.article
+            key={person.role}
+            className="person-card"
+            initial={{
+              opacity: 0,
+              y: isMobile ? 48 : 36,
+              x: isMobile ? 0 : index === 0 ? -40 : 40,
+              scale: isMobile ? 0.9 : 1,
+            }}
+            whileInView={{ opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }}
+            viewport={{ once: true, amount: isMobile ? 0.25 : 0.5 }}
+            transition={{
+              type: 'spring',
+              stiffness: 260,
+              damping: 18,
+              delay: index * 0.12,
+            }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="role">{person.role}</div>
+            <h3>{person.name}</h3>
+            {person.occupation && <p>{person.occupation}</p>}
+          </motion.article>
+        ))}
+      </div>
+
+      <div className="family-meta">
+        <InfoGrid
+          items={[
+            { label: 'Brothers', value: siblingLabel(data.siblings?.brothers?.count, data.siblings?.brothers?.marital_status) },
+            { label: 'Sisters', value: siblingLabel(data.siblings?.sisters?.count, data.siblings?.sisters?.marital_status) },
+            { label: 'Family Type', value: data.family_type },
+            { label: 'Family Status', value: data.family_status },
+            { label: 'Native Place', value: data.native_place },
+          ]}
+        />
       </div>
     </Section>
   )
 }
 
 export default FamilyDetails
-

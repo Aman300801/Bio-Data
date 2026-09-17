@@ -1,25 +1,140 @@
-.app {
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
+.scroll-progress {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 80;
+  transform-origin: 0% 50%;
+  background: linear-gradient(90deg, #667eea, #f093fb, #4facfe);
 }
 
-.content-container {
-  max-width: 1200px;
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  margin-top: -28px;
+  padding: 10px 16px;
+  transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.site-nav-inner {
+  max-width: 980px;
   margin: 0 auto;
-  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(102, 126, 234, 0.14);
+  border-radius: 999px;
+  box-shadow: 0 10px 40px rgba(44, 36, 22, 0.08);
 }
 
-/* Mobile Responsive */
+.site-nav.is-stuck {
+  padding: 8px 12px;
+  background: rgba(250, 248, 245, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(44, 36, 22, 0.06);
+}
+
+.site-nav.is-stuck .site-nav-inner {
+  border-radius: 18px;
+}
+
+.site-nav-name {
+  flex: 0 0 auto;
+  display: none;
+  padding: 0 10px 0 14px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.site-nav.is-stuck .site-nav-name {
+  display: block;
+}
+
+.profile-nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: none;
+}
+
+.profile-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-nav a {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.profile-nav a span {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(102, 126, 234, 0.16);
+}
+
+.profile-nav a:hover,
+.profile-nav a:focus-visible,
+.profile-nav a.is-active {
+  background: transparent;
+  color: #5b4b9a;
+}
+
 @media (max-width: 768px) {
-  .content-container {
-    padding: 0 16px;
+  .scroll-progress {
+    height: 4px;
   }
-}
 
-@media (max-width: 480px) {
-  .content-container {
-    padding: 0 12px;
+  .site-nav {
+    top: env(safe-area-inset-top, 0px);
+    padding: 8px 10px;
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+    margin-top: -20px;
+  }
+
+  .site-nav-inner {
+    border-radius: 18px;
+    padding: 6px;
+    gap: 0;
+  }
+
+  .site-nav.is-stuck .site-nav-name {
+    display: none;
+  }
+
+  .profile-nav a {
+    min-height: 40px;
+    padding: 10px 14px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
   }
 }
 
