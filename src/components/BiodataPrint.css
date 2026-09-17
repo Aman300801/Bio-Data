@@ -1,0 +1,286 @@
+.pdf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(28, 22, 18, 0.55);
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-toolbar {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+}
+
+.pdf-icon-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(28, 22, 18, 0.55);
+  color: rgba(255, 255, 255, 0.88);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pdf-icon-btn:hover,
+.pdf-icon-btn:focus-visible {
+  background: rgba(28, 22, 18, 0.78);
+  color: white;
+  outline: none;
+}
+
+.pdf-stage {
+  flex: 1;
+  overflow: auto;
+  padding: 56px 16px 40px;
+  background: #d9cfc0;
+}
+
+.pdf-sheet {
+  width: min(210mm, 100%);
+  margin: 0 auto;
+  background: #fffdf8;
+  color: #2b2218;
+  padding: 14mm 12mm;
+  box-shadow: 0 18px 50px rgba(40, 24, 10, 0.18);
+  border: 8px double #8b1e2d;
+  box-sizing: border-box;
+}
+
+.pdf-blessing {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.pdf-ganesh {
+  width: 80px;
+  height: 88px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 6px;
+}
+
+.pdf-mantra {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #8b1e2d;
+  letter-spacing: 0.06em;
+}
+
+.pdf-header {
+  display: block;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #8b1e2d;
+}
+
+.pdf-header-copy {
+  min-width: 0;
+}
+
+.pdf-kicker {
+  margin: 0 0 6px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8b1e2d;
+}
+
+.pdf-header h1 {
+  margin: 0 0 8px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 34px;
+  line-height: 1.1;
+  color: #3a2418;
+}
+
+.pdf-role {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: break-word;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdf-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #f3ebe0;
+  border: 1px solid #d9c5a8;
+  color: #8b1e2d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  white-space: nowrap;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.pdf-meta {
+  margin: 0;
+  font-size: 12px;
+  color: #6b5a4a;
+}
+
+.pdf-section {
+  margin-top: 14px;
+}
+
+.pdf-section h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8b1e2d;
+  border-bottom: 1px solid #e6d5b8;
+  padding-bottom: 4px;
+}
+
+.pdf-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4px 16px;
+}
+
+.pdf-field {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 12.5px;
+  line-height: 1.35;
+  min-width: 0;
+  align-items: start;
+}
+
+.pdf-field.is-wide {
+  grid-column: 1 / -1;
+}
+
+.pdf-label {
+  color: #7a6554;
+  font-weight: 600;
+}
+
+.pdf-value {
+  color: #2b2218;
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.pdf-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .pdf-sheet {
+    padding: 14px;
+    border-width: 5px;
+  }
+
+  .pdf-header h1 {
+    font-size: 24px;
+  }
+
+  .pdf-row,
+  .pdf-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pdf-ganesh {
+    width: 68px;
+    height: 76px;
+  }
+
+  .pdf-field {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .app,
+  .scroll-progress,
+  .pdf-toolbar,
+  .lightbox {
+    display: none !important;
+  }
+
+  .pdf-overlay {
+    position: static;
+    background: white;
+    display: block;
+    overflow: visible;
+  }
+
+  .pdf-stage {
+    overflow: visible;
+    padding: 0;
+    background: white;
+  }
+
+  .pdf-sheet {
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none;
+    border-width: 6px;
+    padding: 6mm 7mm;
+    overflow: hidden;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .pdf-header,
+  .pdf-split,
+  .pdf-row,
+  .pdf-blessing,
+  .pdf-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .pdf-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .pdf-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .pdf-field {
+    grid-template-columns: 110px minmax(0, 1fr);
+  }
+}

@@ -8,6 +8,7 @@ import FamilyDetails from './components/FamilyDetails'
 import ReligiousDetails from './components/ReligiousDetails'
 import ContactDetails from './components/ContactDetails'
 import Hero from './components/Hero'
+import BiodataPrint from './components/BiodataPrint'
 import useIsMobile from './hooks/useIsMobile'
 import './App.css'
 import './components/Section.css'
@@ -26,6 +27,7 @@ function App() {
   const professional = biodata.professional_details
   const [activeId, setActiveId] = useState('personal')
   const [navStuck, setNavStuck] = useState(false)
+  const [pdfOpen, setPdfOpen] = useState(false)
   const isMobile = useIsMobile()
 
   const { scrollYProgress } = useScroll()
@@ -70,7 +72,7 @@ function App() {
   return (
     <div className="app">
       <motion.div className="scroll-progress" style={{ scaleX: progress }} />
-      <Hero data={biodata} />
+      <Hero data={biodata} onOpenPdf={() => setPdfOpen(true)} />
 
       <header className={`site-nav ${navStuck ? 'is-stuck' : ''}`}>
         <div className="site-nav-inner">
@@ -97,6 +99,19 @@ function App() {
             ))}
             </nav>
           </LayoutGroup>
+          <button
+            type="button"
+            className="nav-pdf-btn"
+            onClick={() => setPdfOpen(true)}
+            aria-label="View PDF biodata"
+            title="PDF"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+              <path d="M14 3v5h5" />
+              <path d="M8 13h8M8 17h5" />
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -161,6 +176,8 @@ function App() {
           Marriage biodata of {personal.full_name}
         </motion.p>
       </main>
+
+      {pdfOpen && <BiodataPrint data={biodata} onClose={() => setPdfOpen(false)} />}
     </div>
   )
 }

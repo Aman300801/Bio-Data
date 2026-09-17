@@ -3,7 +3,7 @@
     "full_name": "Aman Sharma",
     "gender": "Male",
     "date_of_birth": "2001-08-30",
-    "age": "24",
+    "age": "25",
     "place_of_birth": "Ramgarh, Alwar",
     "height": "5'11\"",
     "complexion": "Gehua",
@@ -66,7 +66,6 @@
       { "file": "aman.jpg", "alt": "Aman Sharma" },
       { "file": "aman-2.jpg", "alt": "Aman Sharma at a mountain viewpoint" },
       { "file": "aman-3.jpg", "alt": "Aman Sharma at a temple" },
-      { "file": "aman-4.jpg", "alt": "Aman Sharma in the mountains" },
       { "file": "aman-5.jpg", "alt": "Aman Sharma in traditional attire" }
     ]
   }
