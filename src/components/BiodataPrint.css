@@ -134,6 +134,12 @@
   -webkit-print-color-adjust: exact;
 }
 
+.pdf-chip-soft {
+  background: #eef4ea;
+  border-color: #c5d6b8;
+  color: #3d5c2e;
+}
+
 .pdf-meta {
   margin: 0;
   font-size: 12px;

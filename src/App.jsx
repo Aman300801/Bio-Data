@@ -36,8 +36,8 @@ function App() {
   const highlights = [
     { label: 'Age', value: personal.age ? `${personal.age} yrs` : null },
     { label: 'Height', value: personal.height },
-    { label: 'Profession', value: professional.occupation },
-    { label: 'Lives in', value: professional.work_location },
+    { label: 'Role', value: professional.designation || professional.occupation },
+    { label: 'Salary', value: professional.salary },
   ].filter((item) => item.value)
 
   useEffect(() => {

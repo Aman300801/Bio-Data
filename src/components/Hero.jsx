@@ -12,8 +12,8 @@ const Hero = ({ data, onOpenPdf }) => {
   const facts = [
     personal.age && `${personal.age} yrs`,
     personal.height,
-    professional.occupation,
-    professional.work_location,
+    professional.designation || professional.occupation,
+    professional.salary,
   ].filter(Boolean)
 
   return (
@@ -65,12 +65,17 @@ const Hero = ({ data, onOpenPdf }) => {
             {name}
           </motion.h1>
 
-          {(professional.occupation || professional.organization_name) && (
+          {(professional.occupation || professional.organization_name || professional.designation) && (
             <motion.p
               className="hero-role"
               variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: easeOut } } }}
             >
-              {[professional.occupation, professional.organization_name].filter(Boolean).join(' at ')}
+              {[
+                [professional.occupation, professional.organization_name].filter(Boolean).join(' at '),
+                professional.designation,
+              ]
+                .filter(Boolean)
+                .join(' · ')}
             </motion.p>
           )}
 

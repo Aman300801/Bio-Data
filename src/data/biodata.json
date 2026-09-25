@@ -24,6 +24,7 @@
     "organization_name": "Times Internet",
     "designation": "Manager M1",
     "work_location": "Noida",
+    "salary": "21 LPA",
     "employment_type": "Full Time"
   },
   "family_details": {
@@ -33,12 +34,12 @@
     },
     "mother": {
       "name": "Shrimati Sudha Sharma",
-      "occupation": "Teacher"
+      "occupation": "Government Teacher"
     },
     "siblings": {
       "brothers": {
         "count": "1",
-        "marital_status": "Single"
+        "marital_status": "Single (Pursuing MBBS)"
       },
       "sisters": {
         "count": "0"

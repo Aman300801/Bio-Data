@@ -8,7 +8,7 @@ import './Section.css'
 const siblingLabel = (count, maritalStatus) => {
   if (count === undefined || count === null || count === '') return ''
   if (String(count) === '0') return 'None'
-  return maritalStatus ? `${count} (${maritalStatus})` : String(count)
+  return maritalStatus ? `${count} · ${maritalStatus}` : String(count)
 }
 
 const FamilyDetails = ({ data }) => {

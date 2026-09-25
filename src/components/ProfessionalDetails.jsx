@@ -27,8 +27,8 @@ const ProfessionalDetails = ({ data }) => {
           { label: 'Designation', value: data.designation },
           { label: 'Organization', value: data.organization_name },
           { label: 'Work Location', value: data.work_location },
+          { label: 'Annual Income', value: data.salary || data.annual_income },
           { label: 'Employment Type', value: data.employment_type },
-          { label: 'Annual Income', value: data.annual_income },
         ]}
       />
     </Section>

@@ -55,7 +55,7 @@ const BiodataPrint = ({ data, onClose }) => {
   const siblingLine = (sibling) => {
     if (sibling?.count === undefined || sibling?.count === null || sibling?.count === '') return ''
     if (String(sibling.count) === '0') return 'None'
-    return sibling.marital_status ? `${sibling.count} (${sibling.marital_status})` : sibling.count
+    return sibling.marital_status ? `${sibling.count} · ${sibling.marital_status}` : sibling.count
   }
   const brotherText = siblingLine(family.siblings?.brothers)
   const sisterText = siblingLine(family.siblings?.sisters)
@@ -110,6 +110,9 @@ const BiodataPrint = ({ data, onClose }) => {
                 {professional.designation && (
                   <span className="pdf-chip">{professional.designation}</span>
                 )}
+                {professional.salary && (
+                  <span className="pdf-chip pdf-chip-soft">{professional.salary}</span>
+                )}
               </p>
               <p className="pdf-meta">
                 {[
@@ -160,6 +163,7 @@ const BiodataPrint = ({ data, onClose }) => {
                   { label: 'Occupation', value: professional.occupation, wide: true },
                   { label: 'Designation', value: professional.designation, chip: true, wide: true },
                   { label: 'Organization', value: professional.organization_name, wide: true },
+                  { label: 'Salary', value: professional.salary || professional.annual_income, chip: true, wide: true },
                   { label: 'Employment', value: professional.employment_type, wide: true },
                 ]}
               />
@@ -174,10 +178,10 @@ const BiodataPrint = ({ data, onClose }) => {
                 { label: "Father's Occupation", value: family.father?.occupation, wide: true },
                 { label: 'Mother', value: family.mother?.name, wide: true },
                 { label: "Mother's Occupation", value: family.mother?.occupation, wide: true },
-                { label: 'Brothers', value: brotherText },
+                { label: 'Brothers', value: brotherText, wide: true },
                 { label: 'Sisters', value: sisterText },
                 { label: 'Family Type', value: family.family_type },
-                { label: 'Native Place', value: family.native_place },
+                { label: 'Native Place', value: family.native_place, wide: true },
               ]}
             />
           </section>
