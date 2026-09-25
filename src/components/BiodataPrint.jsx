@@ -15,18 +15,33 @@ const formatDate = (value) => {
   })
 }
 
-const Row = ({ items }) => (
-  <div className="pdf-row">
-    {items.filter((item) => item.value).map((item) => (
-      <div className={`pdf-field${item.wide ? ' is-wide' : ''}`} key={item.label}>
-        <span className="pdf-label">{item.label}</span>
-        <span className="pdf-value">
-          {item.chip ? <span className="pdf-chip">{item.value}</span> : item.value}
-        </span>
-      </div>
-    ))}
-  </div>
-)
+const Field = ({ label, value, chip, soft, wide }) => {
+  if (!value) return null
+  return (
+    <div className={`pdf-field${wide ? ' is-wide' : ''}`}>
+      <span className="pdf-label">{label}</span>
+      <span className="pdf-value">
+        {chip ? (
+          <span className={`pdf-chip${soft ? ' pdf-chip-soft' : ''}`}>{value}</span>
+        ) : (
+          value
+        )}
+      </span>
+    </div>
+  )
+}
+
+const FieldGrid = ({ items }) => {
+  const visible = items.filter((item) => item.value)
+  if (!visible.length) return null
+  return (
+    <div className="pdf-grid">
+      {visible.map((item) => (
+        <Field key={item.label} {...item} />
+      ))}
+    </div>
+  )
+}
 
 const BiodataPrint = ({ data, onClose }) => {
   const personal = data.personal_details || {}
@@ -48,17 +63,20 @@ const BiodataPrint = ({ data, onClose }) => {
     }
   }, [onClose])
 
-  const handlePrint = () => {
-    window.print()
-  }
-
   const siblingLine = (sibling) => {
     if (sibling?.count === undefined || sibling?.count === null || sibling?.count === '') return ''
     if (String(sibling.count) === '0') return 'None'
     return sibling.marital_status ? `${sibling.count} · ${sibling.marital_status}` : sibling.count
   }
-  const brotherText = siblingLine(family.siblings?.brothers)
-  const sisterText = siblingLine(family.siblings?.sisters)
+
+  const snapshot = [
+    personal.age && { label: 'Age', value: `${personal.age} yrs` },
+    personal.height && { label: 'Height', value: personal.height },
+    personal.sub_caste && { label: 'Caste', value: personal.sub_caste },
+    professional.work_location && { label: 'City', value: professional.work_location },
+    personal.blood_group && { label: 'Blood', value: personal.blood_group },
+    personal.marital_status && { label: 'Status', value: personal.marital_status },
+  ].filter(Boolean)
 
   return createPortal(
     <div className="pdf-overlay">
@@ -66,7 +84,7 @@ const BiodataPrint = ({ data, onClose }) => {
         <button
           type="button"
           className="pdf-icon-btn"
-          onClick={handlePrint}
+          onClick={() => window.print()}
           aria-label="Download PDF"
           title="Download PDF"
         >
@@ -96,107 +114,137 @@ const BiodataPrint = ({ data, onClose }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
         >
+          <div className="pdf-ornament" aria-hidden="true" />
+
           <div className="pdf-blessing">
             <img src={ganeshImage} alt="Lord Ganesha" className="pdf-ganesh" />
             <p className="pdf-mantra">॥ श्री गणेशाय नमः ॥</p>
           </div>
 
-          <header className="pdf-header">
-            <div className="pdf-header-copy">
-              <p className="pdf-kicker">Marriage Biodata</p>
-              <h1>{personal.full_name}</h1>
-              <p className="pdf-role">
-                {[professional.occupation, professional.organization_name].filter(Boolean).join(' · ')}
-                {professional.designation && (
-                  <span className="pdf-chip">{professional.designation}</span>
-                )}
-                {professional.salary && (
-                  <span className="pdf-chip pdf-chip-soft">{professional.salary}</span>
-                )}
-              </p>
-              <p className="pdf-meta">
-                {[
-                  personal.age && `${personal.age} years`,
-                  personal.height,
-                  personal.sub_caste,
-                ]
-                  .filter(Boolean)
-                  .join('  •  ')}
-              </p>
+          <header className="pdf-identity">
+            <p className="pdf-kicker">Marriage Biodata</p>
+            <h1>{personal.full_name}</h1>
+            <p className="pdf-role-line">
+              {[professional.occupation, professional.organization_name, professional.work_location]
+                .filter(Boolean)
+                .join(' · ')}
+            </p>
+            <div className="pdf-chip-row">
+              {professional.designation && (
+                <span className="pdf-chip">{professional.designation}</span>
+              )}
+              {professional.salary && (
+                <span className="pdf-chip pdf-chip-soft">{professional.salary}</span>
+              )}
+              {education.highest_qualification && (
+                <span className="pdf-chip pdf-chip-muted">{education.highest_qualification}</span>
+              )}
             </div>
           </header>
 
+          {snapshot.length > 0 && (
+            <div
+              className="pdf-snapshot"
+              style={{ gridTemplateColumns: `repeat(${snapshot.length}, minmax(0, 1fr))` }}
+            >
+              {snapshot.map((item) => (
+                <div className="pdf-snapshot-item" key={item.label}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </div>
+              ))}
+            </div>
+          )}
+
           <section className="pdf-section">
-            <h2>Personal Details</h2>
-            <Row
+            <h2>Personal</h2>
+            <FieldGrid
               items={[
-                { label: 'Full Name', value: personal.full_name },
                 { label: 'Date of Birth', value: formatDate(personal.date_of_birth) },
-                { label: 'Age', value: personal.age ? `${personal.age} years` : '' },
-                { label: 'Gender', value: personal.gender },
-                { label: 'Height', value: personal.height },
-                { label: 'Complexion', value: personal.complexion },
-                { label: 'Blood Group', value: personal.blood_group },
-                { label: 'Marital Status', value: personal.marital_status },
                 { label: 'Place of Birth', value: personal.place_of_birth },
                 { label: 'Religion', value: personal.religion },
-                { label: 'Caste', value: personal.sub_caste },
                 { label: 'Mother Tongue', value: personal.mother_tongue },
                 { label: 'Nationality', value: personal.nationality },
+                { label: 'Gender', value: personal.gender },
               ]}
             />
           </section>
 
-          <div className="pdf-split">
-            <section className="pdf-section">
-              <h2>Education</h2>
-              <Row
-                items={[
-                  { label: 'Qualification', value: education.highest_qualification, wide: true },
-                ]}
-              />
-            </section>
-            <section className="pdf-section">
-              <h2>Profession</h2>
-              <Row
-                items={[
-                  { label: 'Occupation', value: professional.occupation, wide: true },
-                  { label: 'Designation', value: professional.designation, chip: true, wide: true },
-                  { label: 'Organization', value: professional.organization_name, wide: true },
-                  { label: 'Salary', value: professional.salary || professional.annual_income, chip: true, wide: true },
-                  { label: 'Employment', value: professional.employment_type, wide: true },
-                ]}
-              />
-            </section>
-          </div>
+          <section className="pdf-section">
+            <h2>Education</h2>
+            <FieldGrid
+              items={[
+                { label: 'Qualification', value: education.highest_qualification },
+                { label: 'Year', value: education.year_of_passing },
+                { label: 'College', value: education.institution, wide: true },
+              ]}
+            />
+          </section>
 
           <section className="pdf-section">
-            <h2>Family Details</h2>
-            <Row
+            <h2>Profession</h2>
+            <FieldGrid
               items={[
-                { label: 'Father', value: family.father?.name, wide: true },
-                { label: "Father's Occupation", value: family.father?.occupation, wide: true },
-                { label: 'Mother', value: family.mother?.name, wide: true },
-                { label: "Mother's Occupation", value: family.mother?.occupation, wide: true },
-                { label: 'Brothers', value: brotherText, wide: true },
-                { label: 'Sisters', value: sisterText },
+                { label: 'Occupation', value: professional.occupation },
+                { label: 'Organization', value: professional.organization_name },
+                { label: 'Designation', value: professional.designation, chip: true },
+                { label: 'Location', value: professional.work_location },
+                { label: 'Salary', value: professional.salary, chip: true, soft: true },
+                { label: 'Employment', value: professional.employment_type },
+              ]}
+            />
+          </section>
+
+          <section className="pdf-section">
+            <h2>Family</h2>
+            <div className="pdf-family">
+              {family.father?.name && (
+                <div className="pdf-person">
+                  <span className="pdf-person-role">Father</span>
+                  <strong>{family.father.name}</strong>
+                  {family.father.occupation && <p>{family.father.occupation}</p>}
+                </div>
+              )}
+              {family.mother?.name && (
+                <div className="pdf-person">
+                  <span className="pdf-person-role">Mother</span>
+                  <strong>{family.mother.name}</strong>
+                  {family.mother.occupation && <p>{family.mother.occupation}</p>}
+                </div>
+              )}
+            </div>
+            <FieldGrid
+              items={[
+                { label: 'Brothers', value: siblingLine(family.siblings?.brothers) },
+                { label: 'Sisters', value: siblingLine(family.siblings?.sisters) },
                 { label: 'Family Type', value: family.family_type },
-                { label: 'Native Place', value: family.native_place, wide: true },
+                { label: 'Native Place', value: family.native_place },
               ]}
             />
           </section>
 
-          <section className="pdf-section">
+          <section className="pdf-contact">
             <h2>Contact</h2>
-            <Row
-              items={[
-                { label: 'Contact Person', value: contact.contact_person_name, wide: true },
-                { label: 'Relation', value: contact.relationship_to_candidate },
-                { label: 'Phone', value: contact.phone_number },
-                { label: 'Address', value: contact.residential_address, wide: true },
-              ]}
-            />
+            <div className="pdf-contact-grid">
+              <div>
+                <span className="pdf-label">Person</span>
+                <strong>{contact.contact_person_name}</strong>
+                {contact.relationship_to_candidate && (
+                  <p>{contact.relationship_to_candidate}</p>
+                )}
+              </div>
+              <div>
+                <span className="pdf-label">Phone</span>
+                <strong>{contact.phone_number}</strong>
+              </div>
+              <div>
+                <span className="pdf-label">Address</span>
+                <strong>{contact.residential_address}</strong>
+              </div>
+            </div>
           </section>
+
+          <div className="pdf-ornament pdf-ornament-bottom" aria-hidden="true" />
         </motion.article>
       </div>
     </div>,
